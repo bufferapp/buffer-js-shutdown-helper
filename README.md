@@ -50,5 +50,5 @@ app.get('/health-check', (req, res) => {
   const code = isShutingDown() ? 500 : 200
   const status = code === 200 ? 'awesome' : 'shutting down'
   res.status(code).json({ status })
-});
+})
 ```
