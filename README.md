@@ -23,7 +23,7 @@ Here is a full usage example:
 ```js
 const http = require('http')
 const express = require('express')
-const shutdownHelper = require('@bufferapp/node-shutdown-helper')
+const shutdownHelper = require('@bufferapp/shutdown-helper')
 
 const SERVICE_NAME = 'Images-Worker'
 const SHUTDOWN_DELAY = 20 // seconds
@@ -47,7 +47,7 @@ Elsewhere in your application, ideally in a health-check endpoint, you can use t
 function to check if your application has received a `SIGTERM`:
 
 ```js
-const { isShutingDown } = require('@bufferapp/node-shutdown-helper')
+const { isShutingDown } = require('@bufferapp/shutdown-helper')
 
 app.get('/health-check', (req, res) => {
   const code = isShutingDown() ? 500 : 200
