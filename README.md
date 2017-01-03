@@ -1,4 +1,4 @@
-# node-shutdown-helper
+# @bufferapp/shutdown-helper
 
 Provides a basic helper that listens to the `SIGTERM` signal and will shutdown the given
 [Express.js](http://expressjs.com/) server after the given delay in seconds.
