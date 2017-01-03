@@ -1,5 +1,8 @@
 # @bufferapp/shutdown-helper
 
+[![NPM Version](https://img.shields.io/npm/v/@bufferapp/shutdown-helper.svg)](https://www.npmjs.com/package/@bufferapp/shutdown-helper)
+[![Build Status](https://travis-ci.org/bufferapp/node-shutdown-helper.svg?branch=master)](https://travis-ci.org/bufferapp/node-shutdown-helper)
+
 Provides a basic helper that listens to the `SIGTERM` signal and will shutdown the given
 [Express.js](http://expressjs.com/) server after the given delay in seconds.
 
