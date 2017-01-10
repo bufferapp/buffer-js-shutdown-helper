@@ -21,20 +21,20 @@ Here is a full usage example:
 const http = require('http')
 const express = require('express')
 const shutdownHelper = require('@bufferapp/shutdown-helper')
-const createLogger = require('@bufferapp/logger');
+const createLogger = require('@bufferapp/logger')
 
-const SHUTDOWN_DELAY = 20 // seconds
+const shutdownDelay = 20 // seconds
 
-const logger = createLogger({ name: 'Images-Worker' });
+const logger = createLogger({ name: 'Images-Worker' })
 const app = express()
 const server = http.createServer(app)
 
 server.listen(8080)
 
-shutdownHelper.init(server, SHUTDOWN_DELAY, logger);
+shutdownHelper.init({ server, shutdownDelay, logger })
 ```
 
-The `init` function takes the following arguments:
+The `init` function takes one argument with the following options:
 
 - `server` ([*http.Server*](https://nodejs.org/dist/latest-v6.x/docs/api/http.html#http_class_http_server)) -
   An instance of a Node http server

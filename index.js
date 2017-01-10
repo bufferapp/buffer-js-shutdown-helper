@@ -1,6 +1,6 @@
 let isShutingDown = false;
 
-const logMessage = (logger, message) => {
+const logMessage = ({ logger, message }) => {
   if (logger) {
     logger.info({}, message);
   } else {
@@ -16,21 +16,21 @@ const logMessage = (logger, message) => {
  * @param {Integer} shutdownDelay
  * @param {@bufferapp/logger} logger
  */
-module.exports.init = (server, shutdownDelay = 20, logger = null) => {
+module.exports.init = ({ server, shutdownDelay = 20, logger = null }) => {
   const READINESS_PROBE_SHUTDOWN_DELAY = shutdownDelay * 1000;
 
   process.on('SIGTERM', () => {
-    logMessage(logger, 'SIGTERM received - Starting graceful shutdown');
+    logMessage({ logger, message: 'SIGTERM received - Starting graceful shutdown' });
 
     isShutingDown = true;
 
     setTimeout(() => {
       server.close(err => {
         if (err) {
-          logMessage(logger, `Express app shutdown error, ${err}`);
+          logMessage({ logger, message: `Express app shutdown error, ${err}` });
           process.exit(1);
         }
-        logMessage(logger, 'Express app shutdown success');
+        logMessage({ logger, message: 'Express app shutdown success' });
         process.exit();
       });
     }, READINESS_PROBE_SHUTDOWN_DELAY);
