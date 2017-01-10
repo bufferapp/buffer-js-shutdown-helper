@@ -10,7 +10,6 @@ describe('helper', function() {
     const READY_SIGNAL = 'ready';
     const mockServer = spawn('node', [
       './test/mock/server.js',
-      'Test-App',
       0,
       READY_SIGNAL
     ]);
@@ -32,13 +31,44 @@ describe('helper', function() {
   });
 
   it('should log twice on shutdown', (done) => {
-    const APP_NAME = 'Test-App';
     const READY_SIGNAL = 'ready';
     const mockServer = spawn('node', [
       './test/mock/server.js',
-      APP_NAME,
       0,
       READY_SIGNAL
+    ]);
+    let msgsLogged = 0;
+
+    mockServer.on('close', (code, signal) => {
+      assert.equal(msgsLogged, 2, `Should have recieved 2 shutdown messages. Recieved ${msgsLogged}`);
+      done();
+    });
+
+    // Kill the process when it's signaled it's ready
+    mockServer.stdout.on('data', data => {
+      const msg = data.toString().trim();
+      if (msg == READY_SIGNAL) {
+        mockServer.kill();
+      } else if (
+        msg.match('Starting graceful shutdown') ||
+        msg.match('Express app shutdown success')
+      ) {
+        msgsLogged++;
+      }
+    });
+
+    mockServer.stderr.on('data', data => log(`stderr: ${data}`));
+  });
+
+  it('should log with buffer logger', (done) => {
+    const APP_NAME = 'Test-App';
+    const READY_SIGNAL = 'ready';
+    const ENABLE_LOGGER = true;
+    const mockServer = spawn('node', [
+      './test/mock/server.js',
+      0,
+      READY_SIGNAL,
+      APP_NAME
     ]);
     let msgsLogged = 0;
 
@@ -61,12 +91,10 @@ describe('helper', function() {
   });
 
   it('should delay given number of seconds', (done) => {
-    const APP_NAME = 'Test-App';
     const SHUTDOWN_DELAY = 1;
     const READY_SIGNAL = 'ready';
     const mockServer = spawn('node', [
       './test/mock/server.js',
-      APP_NAME,
       SHUTDOWN_DELAY,
       READY_SIGNAL
     ]);
