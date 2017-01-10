@@ -12,9 +12,6 @@ Provides a basic helper that listens to the `SIGTERM` signal and will shutdown t
 npm install @bufferapp/shutdown-helper -SE
 ```
 
-**Note** - This package requires [`@bufferapp/logger`](https://github.com/bufferapp/node-logger)
-as a peer dependency.
-
 ## Usage
 
 To use with your Express.js app, you'll have to use Node's `http` package to start your server.
@@ -24,24 +21,25 @@ Here is a full usage example:
 const http = require('http')
 const express = require('express')
 const shutdownHelper = require('@bufferapp/shutdown-helper')
+const createLogger = require('@bufferapp/logger');
 
-const SERVICE_NAME = 'Images-Worker'
 const SHUTDOWN_DELAY = 20 // seconds
 
+const logger = createLogger({ name: 'Images-Worker' });
 const app = express()
 const server = http.createServer(app)
 
 server.listen(8080)
 
-shutdownHelper.init(SERVICE_NAME, server, SHUTDOWN_DELAY)
+shutdownHelper.init(server, SHUTDOWN_DELAY, logger);
 ```
 
-The `init` function takes three arguments:
+The `init` function takes the following arguments:
 
-- `name` (*String*) - The service name to use for logging the shutdown messages
 - `server` ([*http.Server*](https://nodejs.org/dist/latest-v6.x/docs/api/http.html#http_class_http_server)) -
   An instance of a Node http server
 - `shutdownDelay` (*Integer*) - The delay in seconds after which to shut down the http server. Default `20` seconds.
+- `logger` (*@bufferapp/logger*) - (optional) - If passed in log messages to [`@bufferapp/logger`](https://github.com/bufferapp/node-logger) otherwise logged to `console`
 
 Elsewhere in your application, ideally in a health-check endpoint, you can use the `isShutingDown`
 function to check if your application has received a `SIGTERM`:

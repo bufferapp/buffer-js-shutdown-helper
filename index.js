@@ -1,31 +1,36 @@
-const createLogger = require('@bufferapp/logger');
-
 let isShutingDown = false;
+
+const logMessage = (logger, message) => {
+  if (logger) {
+    logger.info({}, message);
+  } else {
+    console.log(message);
+  }
+};
 
 /**
  * init
  * Listen to the SIGTERM signal and shutdown the given server after a given delay in seconds
  *
- * @param {String} name
  * @param {http.Server} server
  * @param {Integer} shutdownDelay
+ * @param {@bufferapp/logger} logger
  */
-module.exports.init = (name, server, shutdownDelay = 20) => {
+module.exports.init = (server, shutdownDelay = 20, logger = null) => {
   const READINESS_PROBE_SHUTDOWN_DELAY = shutdownDelay * 1000;
-  const logger = createLogger({ name });
 
   process.on('SIGTERM', () => {
-    logger.info({}, 'SIGTERM received - Starting graceful shutdown');
+    logMessage(logger, 'SIGTERM received - Starting graceful shutdown');
 
     isShutingDown = true;
 
     setTimeout(() => {
       server.close(err => {
         if (err) {
-          logger.info({}, `Express app shutdown error, ${err}`);
+          logMessage(logger, `Express app shutdown error, ${err}`);
           process.exit(1);
         }
-        logger.info({}, 'Express app shutdown success');
+        logMessage(logger, 'Express app shutdown success');
         process.exit();
       });
     }, READINESS_PROBE_SHUTDOWN_DELAY);
