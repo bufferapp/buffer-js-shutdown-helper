@@ -1,22 +1,22 @@
 const createLogger = require('@bufferapp/logger');
 const shutdownHelper = require('../../index.js')
 
-const mockServer = {
-  close: (cb) => cb(null)
-}
+const server = {
+  close: (cb) => cb(null),
+};
 
-const SHUTDOWN_DELAY = process.argv[2]
-const READY_SIGNAL = process.argv[3]
-const SERVICE_NAME = process.argv[4]
+const shutdownDelay = process.argv[2];
+const readySignal = process.argv[3];
+const name = process.argv[4];
 
-if (SERVICE_NAME) {
-  const logger = createLogger({ name: SERVICE_NAME });
-  shutdownHelper.init(mockServer, SHUTDOWN_DELAY, logger)
+if (name) {
+  const logger = createLogger({ name });
+  shutdownHelper.init({ server, shutdownDelay, logger });
 } else {
-  shutdownHelper.init(mockServer, SHUTDOWN_DELAY)
+  shutdownHelper.init({ server, shutdownDelay });
 }
 
 // Keep process alive
-setInterval(() => console.log('loop'), 50000)
+setInterval(() => console.log('loop'), 50000);
 
-console.log(READY_SIGNAL)
+console.log(readySignal);
