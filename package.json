@@ -8,17 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/bufferapp/node-shutdown-helper.git"
+    "url": "git+ssh://git@github.com/bufferapp/buffer-js-shutdown-helper.git"
   },
   "author": "Dan Farrelly <daniel.j.farrelly@gmail.com> (http://danfarrelly.nyc)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bufferapp/node-shutdown-helper/issues"
+    "url": "https://github.com/bufferapp/buffer-js-shutdown-helper/issues"
   },
   "engines": {
     "node": ">=6.0.0"
   },
-  "homepage": "https://github.com/bufferapp/node-shutdown-helper#readme",
+  "homepage": "https://github.com/bufferapp/buffer-js-shutdown-helper#readme",
   "devDependencies": {
     "@bufferapp/logger": "0.6.0",
     "mocha": "3.2.0"
